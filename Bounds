@@ -1,0 +1,26 @@
+package soccerInf;
+
+import basicgraphics.BasicFrame;
+import basicgraphics.Sprite;
+import basicgraphics.SpriteComponent;
+import basicgraphics.images.Picture;
+import static java.awt.Color.black;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+
+public class Bounds extends Sprite {
+	public Bounds(SpriteComponent sc) {
+		super(sc);
+		BufferedImage i1 = BasicFrame.createImage(810, 410);
+		Graphics graphic = i1.getGraphics();
+		graphic.setColor(black);
+		graphic.fillRect(0, 0, 805, 5);
+		graphic.fillRect(0, 0, 5, 400);
+		graphic.fillRect(0, 405, 805, 5);
+		graphic.fillRect(805, 0, 5, 400);
+		setX(-5);
+		setY(-5);
+		Picture a1 = new Picture(i1);
+		setPicture(a1);
+	}
+}
