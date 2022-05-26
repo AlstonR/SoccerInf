@@ -1,0 +1,35 @@
+package soccerInf;
+
+import basicgraphics.BasicFrame;
+import basicgraphics.Sprite;
+import basicgraphics.SpriteComponent;
+import basicgraphics.images.Picture;
+import static java.awt.Color.white;
+import static java.awt.Color.black;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.util.Random;
+
+public class Rankings extends Sprite {
+	public Rankings(SpriteComponent sc) {
+		super(sc);
+		BufferedImage i1 = BasicFrame.createImage(800, 400);
+		Graphics g = i1.getGraphics();
+		g.setColor(black);
+		g.fillRect(0, 0, 800, 400);
+		final int NUM_STARS = 50;
+		Random rand = new Random();
+		rand.setSeed(0);
+		g.setColor(white);
+		for (int i = 0; i < NUM_STARS; i++) {
+			int diameter = rand.nextInt(5) + 1;
+			int xpos = rand.nextInt(800);
+			int ypos = rand.nextInt(400);
+			g.fillOval(xpos, ypos, diameter, diameter);
+			setX(0);
+			setY(0);
+			Picture a1 = new Picture(i1);
+			setPicture(a1);
+		}
+	}
+}
