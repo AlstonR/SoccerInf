@@ -1,0 +1,147 @@
+package soccerInf;
+
+import static java.awt.Color.blue;
+import static java.awt.Color.yellow;
+import static java.awt.Color.white;
+import static java.awt.Color.black;
+import static java.awt.Color.red;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import basicgraphics.BasicFrame;
+import basicgraphics.Sprite;
+import basicgraphics.SpriteComponent;
+import basicgraphics.images.Picture;
+
+public class Defenders extends Sprite {
+	public Picture def;
+	public Picture def2;
+	public Picture def3;
+	public Picture def4;
+	public Picture def5;
+	public Picture def6;
+
+	public Defenders(SpriteComponent sc, int x, int y, int jersey) {
+		super(sc);
+		BufferedImage image1 = BasicFrame.createImage(30, 100);
+		Graphics2D g = (Graphics2D) image1.getGraphics();
+		g.setColor(blue);
+		g.fillRect(0, 50, 30, 20);
+		g.setColor(yellow);
+		g.fillRect(0, 10, 30, 40);
+		g.setColor(white);
+		g.fillRect(10, 0, 10, 10);
+		g.fillRect(0, 70, 30, 35);
+		g.setColor(black);
+		g.fillRect(0, 95, 30, 5);
+		setX(x);
+		setY(y);
+		def = new Picture(image1);
+
+		BufferedImage image2 = BasicFrame.createImage(30, 100);
+		Graphics2D g2 = (Graphics2D) image2.getGraphics();
+		g2.setColor(black);
+		g2.fillRect(0, 50, 30, 20);
+		g2.setColor(yellow);
+		g2.fillRect(0, 10, 30, 40);
+		g2.setColor(white);
+		g2.fillRect(10, 0, 10, 10);
+		g2.fillRect(0, 70, 30, 35);
+		g2.setColor(black);
+		g2.fillRect(0, 95, 30, 5);
+		setX(x);
+		setY(y);
+		def2 = new Picture(image2);
+
+		BufferedImage image3 = BasicFrame.createImage(30, 100);
+		Graphics2D g3 = (Graphics2D) image3.getGraphics();
+		g3.setColor(blue);
+		g3.fillRect(0, 50, 30, 20);
+		g3.setColor(black);
+		g3.fillRect(0, 10, 30, 40);
+		g3.setColor(white);
+		g3.fillRect(10, 0, 10, 10);
+		g3.fillRect(0, 70, 30, 35);
+		g3.setColor(black);
+		g3.fillRect(0, 95, 30, 5);
+		setX(x);
+		setY(y);
+		def3 = new Picture(image3);
+
+		BufferedImage image4 = BasicFrame.createImage(30, 100);
+		Graphics2D g4 = (Graphics2D) image4.getGraphics();
+		g4.setColor(black);
+		g4.fillRect(0, 50, 30, 20);
+		g4.setColor(blue);
+		g4.fillRect(0, 10, 30, 40);
+		g4.setColor(red);
+		g4.fillRect(10, 0, 10, 10);
+		g4.fillRect(0, 70, 30, 35);
+		g4.setColor(black);
+		g4.fillRect(0, 95, 30, 5);
+		setX(x);
+		setY(y);
+		def4 = new Picture(image4);
+
+		BufferedImage image5 = BasicFrame.createImage(30, 100);
+		Graphics2D g5 = (Graphics2D) image5.getGraphics();
+		g5.setColor(black);
+		g5.fillRect(0, 50, 30, 20);
+		g5.setColor(yellow);
+		g5.fillRect(0, 10, 30, 40);
+		g5.setColor(red);
+		g5.fillRect(10, 0, 10, 10);
+		g5.fillRect(0, 70, 30, 35);
+		g5.setColor(black);
+		g5.fillRect(0, 95, 30, 5);
+		setX(x);
+		setY(y);
+		def5 = new Picture(image5);
+
+		BufferedImage image6 = BasicFrame.createImage(30, 100);
+		Graphics2D g6 = (Graphics2D) image6.getGraphics();
+		g6.setColor(black);
+		g6.fillRect(0, 50, 30, 20);
+		g6.setColor(black);
+		g6.fillRect(0, 10, 30, 40);
+		g6.setColor(red);
+		g6.fillRect(10, 0, 10, 10);
+		g6.fillRect(0, 70, 30, 35);
+		g6.setColor(black);
+		g6.fillRect(0, 95, 30, 5);
+		setX(x);
+		setY(y);
+		def6 = new Picture(image6);
+		getDef(jersey);
+	}
+
+	public void getDef(int n) { // turns jersey to jersey number
+		switch (n) {
+		case 1:
+			setPicture(def);
+			break;
+		case 2:
+			setPicture(def2);
+			break;
+		case 3:
+			setPicture(def3);
+			break;
+		case 4:
+			setPicture(def4);
+			break;
+		case 5:
+			setPicture(def5);
+			break;
+		case 6:
+			setPicture(def6);
+			break;
+		default:
+			setPicture(def);
+		}
+	}
+
+	public void reDefender(SpriteComponent sc, int x, int y, int jersey) { // changes defenders jersey, and location
+		getDef(jersey);
+		setX(x);
+		setY(y);
+	}
+}
