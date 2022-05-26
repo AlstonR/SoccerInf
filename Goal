@@ -1,0 +1,23 @@
+package soccerInf;
+
+import basicgraphics.BasicFrame;
+import basicgraphics.Sprite;
+import basicgraphics.SpriteComponent;
+import basicgraphics.images.Picture;
+import static java.awt.Color.white;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+
+public class Goal extends Sprite {
+	public Goal(SpriteComponent sc) {
+		super(sc);
+		BufferedImage image = BasicFrame.createImage(30, 150);
+		Graphics graphic = image.getGraphics();
+		graphic.setColor(white);
+		graphic.fillRect(0, 0, 30, 150);
+		setX(770);
+		setY(125);
+		Picture picture = new Picture(image);
+		setPicture(picture);
+	}
+}
