@@ -1,0 +1,36 @@
+package soccerInf;
+
+import basicgraphics.BasicFrame;
+import basicgraphics.Sprite;
+import basicgraphics.SpriteComponent;
+import basicgraphics.images.Picture;
+import static java.awt.Color.green;
+import static java.awt.Color.red;
+import static java.awt.Color.black;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+
+public class Field extends Sprite {
+	public Picture field0;
+	public Picture field10;
+
+	public Field(SpriteComponent sc) {
+		super(sc);
+		BufferedImage i1 = BasicFrame.createImage(800, 400);
+		Graphics graphic = i1.getGraphics();
+		graphic.setColor(green);
+		graphic.fillRect(0, 0, 800, 400);
+		setX(0);
+		setY(0);
+		field0 = new Picture(i1);
+		setPicture(field0);
+
+		BufferedImage image10 = BasicFrame.createImage(800, 400);
+		Graphics2D g10 = (Graphics2D) image10.getGraphics();
+		g10.setColor(red);
+		g10.setColor(black);
+		g10.fillRect(0, 0, 800, 400);
+		field10 = new Picture(image10);
+	}
+}
