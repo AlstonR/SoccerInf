@@ -19,6 +19,8 @@ public class Defenders extends Sprite {
 	public Picture def4;
 	public Picture def5;
 	public Picture def6;
+	public Picture def7;
+	public Picture def8;
 
 	public Defenders(SpriteComponent sc, int x, int y, int jersey) {
 		super(sc);
@@ -33,8 +35,6 @@ public class Defenders extends Sprite {
 		g.fillRect(0, 70, 30, 35);
 		g.setColor(black);
 		g.fillRect(0, 95, 30, 5);
-		setX(x);
-		setY(y);
 		def = new Picture(image1);
 
 		BufferedImage image2 = BasicFrame.createImage(30, 100);
@@ -48,8 +48,6 @@ public class Defenders extends Sprite {
 		g2.fillRect(0, 70, 30, 35);
 		g2.setColor(black);
 		g2.fillRect(0, 95, 30, 5);
-		setX(x);
-		setY(y);
 		def2 = new Picture(image2);
 
 		BufferedImage image3 = BasicFrame.createImage(30, 100);
@@ -63,8 +61,6 @@ public class Defenders extends Sprite {
 		g3.fillRect(0, 70, 30, 35);
 		g3.setColor(black);
 		g3.fillRect(0, 95, 30, 5);
-		setX(x);
-		setY(y);
 		def3 = new Picture(image3);
 
 		BufferedImage image4 = BasicFrame.createImage(30, 100);
@@ -78,8 +74,6 @@ public class Defenders extends Sprite {
 		g4.fillRect(0, 70, 30, 35);
 		g4.setColor(black);
 		g4.fillRect(0, 95, 30, 5);
-		setX(x);
-		setY(y);
 		def4 = new Picture(image4);
 
 		BufferedImage image5 = BasicFrame.createImage(30, 100);
@@ -93,8 +87,6 @@ public class Defenders extends Sprite {
 		g5.fillRect(0, 70, 30, 35);
 		g5.setColor(black);
 		g5.fillRect(0, 95, 30, 5);
-		setX(x);
-		setY(y);
 		def5 = new Picture(image5);
 
 		BufferedImage image6 = BasicFrame.createImage(30, 100);
@@ -108,9 +100,35 @@ public class Defenders extends Sprite {
 		g6.fillRect(0, 70, 30, 35);
 		g6.setColor(black);
 		g6.fillRect(0, 95, 30, 5);
+		def6 = new Picture(image6);
+		
+		BufferedImage image7 = BasicFrame.createImage(30, 100);
+		Graphics2D g7 = (Graphics2D) image7.getGraphics();
+		g7.setColor(black);
+		g7.fillRect(0, 50, 30, 20);
+		g7.setColor(black);
+		g7.fillRect(0, 10, 30, 40);
+		g7.setColor(white);
+		g7.fillRect(10, 0, 10, 10);
+		g7.fillRect(0, 70, 30, 35);
+		g7.setColor(black);
+		g7.fillRect(0, 95, 30, 5);
+		def7 = new Picture(image7);
+		
+		BufferedImage image8 = BasicFrame.createImage(30, 100);
+		Graphics2D g8 = (Graphics2D) image8.getGraphics();
+		g8.setColor(blue);
+		g8.fillRect(0, 50, 30, 20);
+		g8.setColor(blue);
+		g8.fillRect(0, 10, 30, 40);
+		g8.setColor(red);
+		g8.fillRect(10, 0, 10, 10);
+		g8.fillRect(0, 70, 30, 35);
+		g8.setColor(black);
+		g8.fillRect(0, 95, 30, 5);
+		def8 = new Picture(image8);
 		setX(x);
 		setY(y);
-		def6 = new Picture(image6);
 		getDef(jersey);
 	}
 
@@ -133,6 +151,12 @@ public class Defenders extends Sprite {
 			break;
 		case 6:
 			setPicture(def6);
+			break;
+		case 7:
+			setPicture(def7);
+			break;
+		case 8:
+			setPicture(def8);
 			break;
 		default:
 			setPicture(def);
