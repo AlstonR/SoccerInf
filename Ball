@@ -1,0 +1,60 @@
+package soccerInf;
+
+import basicgraphics.Sprite;
+import basicgraphics.SpriteComponent;
+import basicgraphics.BasicFrame;
+import basicgraphics.images.Picture;
+import static java.awt.Color.black;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import static java.awt.Color.white;
+import static java.awt.Color.blue;
+import static java.awt.Color.red;
+
+public class Ball extends Sprite {
+	public Picture ball1;
+	public Picture ball5;
+	public Picture ball15;
+
+	public Ball(SpriteComponent sc) {
+		super(sc);
+		BufferedImage image = BasicFrame.createImage(40, 40);
+		Graphics2D g = (Graphics2D) image.getGraphics();
+		g.setColor(white);
+		g.fillRect(0, 0, 40, 40);
+		g.setColor(black);
+		g.fillRect(0, 0, 10, 10);
+		g.fillRect(30, 0, 10, 10);
+		g.fillRect(0, 30, 10, 10);
+		g.fillRect(30, 30, 10, 10);
+		g.fillRect(15, 15, 10, 10);
+		setX(0);
+		setY(180);
+		ball1 = new Picture(image);
+		setPicture(ball1);
+
+		BufferedImage image5 = BasicFrame.createImage(40, 40);
+		Graphics2D g5 = (Graphics2D) image5.getGraphics();
+		g5.setColor(blue);
+		g5.fillRect(0, 0, 40, 40);
+		g5.setColor(black);
+		g5.fillRect(0, 0, 10, 10);
+		g5.fillRect(30, 0, 10, 10);
+		g5.fillRect(0, 30, 10, 10);
+		g5.fillRect(30, 30, 10, 10);
+		g5.fillRect(15, 15, 10, 10);
+		ball5 = new Picture(image5);
+
+		BufferedImage image15 = BasicFrame.createImage(40, 40);
+		Graphics2D g15 = (Graphics2D) image15.getGraphics();
+		g15.setColor(red);
+		g15.fillRect(0, 0, 40, 40);
+		g15.setColor(black);
+		g15.fillRect(0, 0, 10, 10);
+		g15.fillRect(30, 0, 10, 10);
+		g15.fillRect(0, 30, 10, 10);
+		g15.fillRect(30, 30, 10, 10);
+		g15.fillRect(15, 15, 10, 10);
+		ball15 = new Picture(image15);
+	}
+}
