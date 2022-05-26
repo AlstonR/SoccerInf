@@ -1,0 +1,400 @@
+package soccerInf;
+
+//@author Alston Rivera
+import basicgraphics.BasicFrame;
+import basicgraphics.Clock;
+import basicgraphics.SpriteComponent;
+import basicgraphics.SpriteSpriteCollisionListener;
+import basicgraphics.sounds.ReusableClip;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Point;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import static java.awt.event.KeyEvent.VK_LEFT;
+import static java.awt.event.KeyEvent.VK_RIGHT;
+import static java.awt.event.KeyEvent.VK_UP;
+import static java.awt.event.KeyEvent.VK_DOWN;
+import static java.awt.event.KeyEvent.VK_W;
+import static java.awt.event.KeyEvent.VK_A;
+import static java.awt.event.KeyEvent.VK_S;
+import static java.awt.event.KeyEvent.VK_D;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+// This code runs a game called SoccerInf it is a game where you control a ball with your arrow keys avoiding defenders and not going out of bounds and try to score a goal 
+public class SoccerInf {
+	private static int score; // keeps track of current attempts score
+	private final static JLabel[] headers = new JLabel[] { new JLabel("SoccerInf Click to Start!!!"), // spaces for
+																										// header and
+																										// leader board
+																										// header
+			new JLabel(""), new JLabel(""), new JLabel(""), new JLabel(""), new JLabel(""), new JLabel(""),
+			new JLabel(""), new JLabel(""), new JLabel(""), new JLabel("") };
+	private final static SpriteComponent sc = new SpriteComponent();
+	private final static BasicFrame bf = new BasicFrame("SoccerInfinite");
+	public static Defenders D1; // declares 3 defenders
+	public static Defenders D2;
+	public static Defenders D3;
+	private State state = State.START; // declaration for the state of the game
+	public static Point mousePosition = new Point(0, 0); // tracks mouse position
+	public static String header; // the string to change the first header
+	public static int[] ranking = new int[11];
+	public static String currentState = "Start"; // debugging to print out the current state
+	public static Ball ball = new Ball(sc); // makes the game ball
+	public static Bounce bounce = new Bounce(sc); // makes bounce for start and ranking screen, add class so collision
+													// doesn't interfere when in play
+	public static Start start = new Start(sc); // makes start screen
+	public static Bounds bound = new Bounds(sc); // makes the out of bounds
+	public static Field grass = new Field(sc); // makes screen green
+	public static Goal goal = new Goal(sc); // makes goal
+	public static ShootingBall sball1 = new ShootingBall(sc, 50);// makes shooting ball 5
+	public static ShootingBall sball2 = new ShootingBall(sc, 100);
+	public static ShootingBall sball3 = new ShootingBall(sc, 150);
+	public static ShootingBall sball4 = new ShootingBall(sc, 200);
+	public static ShootingBall sball5 = new ShootingBall(sc, 250);
+	public static ShootingBall sball6 = new ShootingBall(sc, 300);
+	public static ShootingBall sball7 = new ShootingBall(sc, 350);
+	public static ShootingBall sball8 = new ShootingBall(sc, 400);
+	public static Rankings r = new Rankings(sc); // makes rankings screen
+	public static final ReusableClip boom = new ReusableClip("die.wav"); // makes the losing sound
+	public static final ReusableClip scoreSound = new ReusableClip("beep.wav"); // makes scoring sounds
+
+	public enum State { // declaration of each state of the game
+		START, RUNNING, RANKINGS;
+	}
+
+	public void run() { // checks what the state of the game is and then runs it
+		switch (state) {
+		case START:
+			runStart();
+			break;
+		case RUNNING:
+			runGame();
+			break;
+		case RANKINGS:
+			runRank();
+			break;
+		default:
+			System.exit(0);
+		}
+	}
+
+	public static void updateHeader() { // updates the 1st header to current header
+		headers[0].setText(header);
+	}
+
+	public static void updateScore() { // when scored increments score and updates header
+		score++;
+		headers[0].setText("Score: " + score + "   Use arrow keys to move or WASD");
+	}
+
+	public static void switchHeader(int n) { // switches between header depending on current state of the game. could
+												// use currentState
+		if (n == 0) {
+			header = "SoccerInf Click to Start!!!";
+		} else if (n == 1) {
+			header = "Score: " + score;
+		} else if (n == 2) {
+			header = "SoccerInf LeaderBoards";
+		}
+	}
+
+	public void runStart() { // runs the start screen starts the clock since start screen only runs once, was
+								// having problems when clock was in RUNNING
+		for (int i = 0; i < 10; i++) { // sets rankings to 0 so headers wont yell
+			ranking[i] = 0;
+		}
+		Dimension d = new Dimension(800, 400);
+		Clock.start(10);
+		Clock.addTask(sc.moveSprites());
+		sc.setPreferredSize(d);
+		bf.setStringLayout(new String[][] { { "h0" }, { "A0" }, { "B0" }, { "C0" }, { "D0" }, { "E0" }, { "F0" }, // assigns
+																													// location
+																													// to
+																													// each
+																													// header
+				{ "G0" }, { "H0" }, { "I0" }, { "J0" }, { "K0" }, { "m0" } });
+		bf.add("m0", sc);
+		bf.add("h0", headers[0]);
+		bf.add("A0", headers[1]);
+		bf.add("B0", headers[2]);
+		bf.add("C0", headers[3]);
+		bf.add("D0", headers[4]);
+		bf.add("E0", headers[5]);
+		bf.add("F0", headers[6]);
+		bf.add("G0", headers[7]);
+		bf.add("H0", headers[8]);
+		bf.add("I0", headers[9]);
+		bf.add("J0", headers[10]);
+		bound.setDrawingPriority(10);
+		bounce.setDrawingPriority(6);
+		headers[0].setPreferredSize(new Dimension(300, 20));
+		headers[0].setFont(new Font("Verdana", Font.PLAIN, 20));
+		start.setDrawingPriority(5); // sets start screen priority so i can send it to back . could just remove
+		bf.show();
+		var m = sc.getMousePosition(); // sets up the mouse listener to be able to go to RUNNING screen
+		MouseAdapter ma = new MouseAdapter() {
+			public void mousePressed(MouseEvent me) {
+				if (currentState.equals("Start")) {
+					state = State.RUNNING;
+					currentState = "Running";
+					System.out.print(currentState);
+					run();
+				}
+			}
+		};
+		sc.addMouseListener(ma);
+	}
+
+	public void runGame() { // runs the game part of game
+		System.out.println("score is " + score);// debugging problem with ball speed after ranking
+		score = 0;
+		Dimension d = new Dimension(800, 400);
+		sc.setPreferredSize(d);
+		switchHeader(1);
+		updateHeader();
+		start.setDrawingPriority(-1);
+		sball1.setDrawingPriority(-1);
+		sball2.setDrawingPriority(-1);
+		sball3.setDrawingPriority(-1);
+		sball4.setDrawingPriority(-1);
+		sball5.setDrawingPriority(-1);
+		sball6.setDrawingPriority(-1);
+		sball7.setDrawingPriority(-1);
+		sball8.setDrawingPriority(-1);
+		bounce.setDrawingPriority(-1);
+		r.setDrawingPriority(-1);
+		bound.setDrawingPriority(10);
+		grass.setDrawingPriority(10);
+		goal.setDrawingPriority(10);
+		ball.setActive(true);
+		ball.setX(0);
+		ball.setY(180);
+		ball.setPicture(ball.ball1);
+		grass.setPicture(grass.field0);
+		makedef();
+		makeLines();
+		ball.setDrawingPriority(grass.getDrawingPriority() + 3);
+		bf.show();
+
+		KeyAdapter kick = new KeyAdapter() {
+			public void keyPressed(KeyEvent a) { // controls
+				if (currentState.equals("Running")) {
+					if (a.getKeyCode() == VK_UP || a.getKeyCode() == VK_W) {
+						ball.setVelY(-2);
+					} else if (a.getKeyCode() == VK_RIGHT || a.getKeyCode() == VK_D) {
+						ball.setVelX((score + 4) / 2);
+						System.out.println("vel is " + ball.getVelX());
+					} else if (a.getKeyCode() == VK_LEFT || a.getKeyCode() == VK_A) {
+						double x = -2;
+						ball.setVelX(x);
+					} else if (a.getKeyCode() == VK_DOWN || a.getKeyCode() == VK_S) {
+
+						double y = 2;
+						ball.setVelY(y);
+					}
+				}
+			}
+		};
+		bf.addKeyListener(kick);
+		sc.addSpriteSpriteCollisionListener(Ball.class, Defenders.class,
+				new SpriteSpriteCollisionListener<Ball, Defenders>() {
+					@Override
+					public void collision(Ball ball, Defenders lp) { // if ball contacts defenders player loses,
+																		// displays ranking
+						boom.play();
+						ball.setVelY(0);
+						ball.setVelX(0);
+						ball.setPicture(ball.ball1);
+						grass.setPicture(grass.field0);
+						ranking[10] = score;
+						score = 0;
+						bound.setDrawingPriority(-1);
+						grass.setDrawingPriority(-1);
+						goal.setDrawingPriority(-1);
+						sc.removeSprite(D1);
+						sc.removeSprite(D2);
+						sc.removeSprite(D3);
+						JOptionPane.showMessageDialog(sc, "You Lost The Ball. You Lose!");
+						System.out.println(ranking.toString());
+						currentState = "Ranks";
+						System.out.print(currentState);
+						state = State.RANKINGS;
+						run();
+					}
+				});
+		sc.addSpriteSpriteCollisionListener(Ball.class, Bounds.class,
+				new SpriteSpriteCollisionListener<Ball, Bounds>() {
+					public void collision(Ball ball, Bounds bounds) { // if ball contacts bounds player loses, displays
+																		// ranking
+						boom.play();
+						ball.setVelY(0);
+						ball.setVelX(0);
+						ranking[10] = score;
+						score = 0;
+						ball.setPicture(ball.ball1);
+						grass.setPicture(grass.field0);
+						sc.removeSprite(D1);
+						sc.removeSprite(D2);
+						sc.removeSprite(D3);
+						JOptionPane.showMessageDialog(sc, "You went out of bounds. You Lose!");
+						state = State.RANKINGS;
+						currentState = "Ranks";
+						System.out.print(currentState);
+						run();
+					}
+				});
+		sc.addSpriteSpriteCollisionListener(Ball.class, Goal.class, new SpriteSpriteCollisionListener<Ball, Goal>() {
+			@Override
+			public void collision(Ball ball, Goal lp) { // if ball contacts goal it's a goal resets and updates score
+														// and defenders
+				scoreSound.play();
+				updateScore();
+				if (score >= 15) {
+					ball.setPicture(ball.ball15);
+				} else if (score >= 10) {
+					grass.setPicture(grass.field10);
+				} else if (score >= 5) {
+					ball.setPicture(ball.ball5);
+				}
+				ball.setVelY(0);
+				ball.setVelX(0);
+				ball.setX(0);
+				ball.setY(180);
+				int y = (int) (Math.random() * (250 - 100 + 1) + 100);
+				int jersey = (int) (Math.random() * (6 - 1 + 1) + 1);
+				System.out.println("jersey =" + jersey);
+				D1.reDefender(sc, 1 * 200, y, jersey);
+				y = (int) (Math.random() * (250 - 100 + 1) + 100);
+				D2.reDefender(sc, 2 * 200, y, jersey);
+				y = (int) (Math.random() * (250 - 100 + 1) + 100);
+				D3.reDefender(sc, 3 * 200, y, jersey);
+				JOptionPane.showMessageDialog(sc, "GOOOOOOOOOAL!");
+			}
+		});
+	}
+
+	public void setRanks() { // sets the current ranking
+		for (int i = 1; i <= 10; i++) {
+			headers[i].setText(String.valueOf(ranking[i - 1]));
+		}
+	}
+
+	public void toString(int[] a) { // prints out ranking array for debugging
+		for (int i = 0; i < a.length; i++) {
+			System.out.print(a[i] + " ");
+		}
+		System.out.println();
+	}
+
+	public void runRank() { // displays ranks and rank screen, can score from rank screen
+		score = 0;
+		mergeSort(ranking, 0, 11);
+		setRanks();
+		toString(ranking);
+		Dimension d = new Dimension(800, 400);
+		sc.setPreferredSize(d);
+		r.setDrawingPriority(20);
+		sball1.setDrawingPriority(21);
+		sball2.setDrawingPriority(21);
+		sball3.setDrawingPriority(21);
+		sball4.setDrawingPriority(21);
+		sball5.setDrawingPriority(21);
+		sball6.setDrawingPriority(21);
+		sball7.setDrawingPriority(21);
+		sball8.setDrawingPriority(21);
+		bounce.setDrawingPriority(22);
+		switchHeader(2);
+		updateHeader();
+		bf.show();
+		var m = sc.getMousePosition(); // makes mouse click listener to go back to game from rankings
+		MouseAdapter ma = new MouseAdapter() {
+			public void mousePressed(MouseEvent me) {
+				if (currentState.equals("Ranks")) {
+					r.setDrawingPriority(-10);
+					state = State.RUNNING;
+					currentState = "Running";
+					System.out.print(currentState);
+					run();
+				}
+			}
+		};
+		sc.addMouseListener(ma);
+	}
+
+	public void makedef() { // makes defenders in random position on y-axis but constant in x
+		int y = (int) (Math.random() * (250 - 100 + 1) + 100);
+		int jersey = (int) (Math.random() * (6 - 1 + 1) + 1);
+		D1 = new Defenders(sc, 1 * 200, y, jersey);
+		y = (int) (Math.random() * (250 - 100 + 1) + 100);
+		D2 = new Defenders(sc, 2 * 200, y, jersey);
+		y = (int) (Math.random() * (250 - 100 + 1) + 100);
+		D3 = new Defenders(sc, 3 * 200, y, jersey);
+		D1.setDrawingPriority(grass.getDrawingPriority() + 2);
+		D2.setDrawingPriority(grass.getDrawingPriority() + 2);
+		D3.setDrawingPriority(grass.getDrawingPriority() + 2);
+	}
+
+	public void makeLines() { /*
+								 * makes the lines on field, each time game is RUNNING makes new lines. Works,
+								 * probably making FieldNum the whole field and filling in where lines should be
+								 * then \ setting priority to just have one but I like the thought of
+								 * Startnum.setDrawingPriority(grass.getDrawingPriority() + 1); plus doesn't
+								 * seem to effect things
+								 */
+		for (int i = 0; i < 100; i++) {
+			FieldNum Startnum = new FieldNum(sc, i * 100, 0); // initial tic top
+			Startnum.setDrawingPriority(grass.getDrawingPriority() + 1);
+		}
+		for (int i = 0; i < 100; i++) {
+			FieldNum Startnum = new FieldNum(sc, i * 100, 360); // initial tic bot
+			Startnum.setDrawingPriority(grass.getDrawingPriority() + 1);
+		}
+	}
+
+	public static void mergeSort(int[] a, int start, int end) { // merge sort for rankings
+		if (end - start < 2)
+			return;
+		int mid = start + (end - start) / 2;
+		mergeSort(a, start, mid);
+		mergeSort(a, mid, end);
+		int[] first = new int[mid - start];
+		int[] second = new int[end - mid];
+		for (int i = 0; i < first.length; i++) {
+			first[i] = a[i + start];
+		}
+		for (int i = 0; i < second.length; i++) {
+			second[i] = a[i + mid];
+		}
+		int i1 = 0, i2 = 0, i = start;
+		while (i1 < first.length && i2 < second.length) {
+			if (first[i1] >= second[i2]) {
+				a[i] = first[i1];
+				i++;
+				i1++;
+			} else {
+				a[i] = second[i2];
+				i++;
+				i2++;
+			}
+		}
+		while (i1 < first.length) {
+			a[i] = first[i1];
+			i1++;
+			i++;
+		}
+		while (i2 < second.length) {
+			a[i] = second[i2];
+			i2++;
+			i++;
+		}
+	}
+
+	public static void main(String[] args) { // main method runs game
+		var game = new SoccerInf();
+		game.run();
+	}
+}
