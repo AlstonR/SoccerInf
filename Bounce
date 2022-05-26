@@ -1,0 +1,158 @@
+package soccerInf;
+
+import basicgraphics.Sprite;
+import basicgraphics.SpriteCollisionEvent;
+import basicgraphics.SpriteComponent;
+import basicgraphics.BasicFrame;
+import basicgraphics.images.Picture;
+import basicgraphics.sounds.ReusableClip;
+
+import static java.awt.Color.black;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import static java.awt.Color.white;
+import static java.awt.Color.blue;
+import static java.awt.Color.red;
+import static java.awt.Color.orange;
+import static java.awt.Color.green;
+import static java.awt.Color.yellow;
+
+public class Bounce extends Sprite {
+	public Picture bounce1;
+	public Picture bounce2;
+	public Picture bounce3;
+	public Picture bounce4;
+	public Picture bounce5;
+	public Picture bounce6;
+	public static String bouncePic = "1";// keeps track of current bounce to switch pictures
+	public static final ReusableClip bounceSound = new ReusableClip("beep.wav"); // makes scoring sounds
+
+	public Bounce(SpriteComponent sc) {
+		super(sc);
+		BufferedImage image = BasicFrame.createImage(40, 40);
+		Graphics2D g = (Graphics2D) image.getGraphics();
+		g.setColor(white);
+		g.fillRect(0, 0, 40, 40);
+		g.setColor(black);
+		g.fillRect(0, 0, 10, 10);
+		g.fillRect(30, 0, 10, 10);
+		g.fillRect(0, 30, 10, 10);
+		g.fillRect(30, 30, 10, 10);
+		g.fillRect(15, 15, 10, 10);
+		setX(0);
+		setY(180);
+		setVelX(2);
+		setVelY(2);
+		bounce1 = new Picture(image);
+		setPicture(bounce1);
+
+		BufferedImage image2 = BasicFrame.createImage(40, 40);
+		Graphics2D g2 = (Graphics2D) image2.getGraphics();
+		g2.setColor(blue);
+		g2.fillRect(0, 0, 40, 40);
+		g2.setColor(black);
+		g2.fillRect(0, 0, 10, 10);
+		g2.fillRect(30, 0, 10, 10);
+		g2.fillRect(0, 30, 10, 10);
+		g2.fillRect(30, 30, 10, 10);
+		g2.fillRect(15, 15, 10, 10);
+		bounce2 = new Picture(image2);
+
+		BufferedImage image3 = BasicFrame.createImage(40, 40);
+		Graphics2D g3 = (Graphics2D) image3.getGraphics();
+		g3.setColor(red);
+		g3.fillRect(0, 0, 40, 40);
+		g3.setColor(black);
+		g3.fillRect(0, 0, 10, 10);
+		g3.fillRect(30, 0, 10, 10);
+		g3.fillRect(0, 30, 10, 10);
+		g3.fillRect(30, 30, 10, 10);
+		g3.fillRect(15, 15, 10, 10);
+		bounce3 = new Picture(image3);
+
+		BufferedImage image4 = BasicFrame.createImage(40, 40);
+		Graphics2D g4 = (Graphics2D) image4.getGraphics();
+		g4.setColor(green);
+		g4.fillRect(0, 0, 40, 40);
+		g4.setColor(black);
+		g4.fillRect(0, 0, 10, 10);
+		g4.fillRect(30, 0, 10, 10);
+		g4.fillRect(0, 30, 10, 10);
+		g4.fillRect(30, 30, 10, 10);
+		g4.fillRect(15, 15, 10, 10);
+		bounce4 = new Picture(image4);
+
+		BufferedImage image5 = BasicFrame.createImage(40, 40);
+		Graphics2D g5 = (Graphics2D) image5.getGraphics();
+		g5.setColor(orange);
+		g5.fillRect(0, 0, 40, 40);
+		g5.setColor(black);
+		g5.fillRect(0, 0, 10, 10);
+		g5.fillRect(30, 0, 10, 10);
+		g5.fillRect(0, 30, 10, 10);
+		g5.fillRect(30, 30, 10, 10);
+		g5.fillRect(15, 15, 10, 10);
+		bounce5 = new Picture(image5);
+
+		BufferedImage image6 = BasicFrame.createImage(40, 40);
+		Graphics2D g6 = (Graphics2D) image6.getGraphics();
+		g6.setColor(yellow);
+		g6.fillRect(0, 0, 40, 40);
+		g6.setColor(black);
+		g6.fillRect(0, 0, 10, 10);
+		g6.fillRect(30, 0, 10, 10);
+		g6.fillRect(0, 30, 10, 10);
+		g6.fillRect(30, 30, 10, 10);
+		g6.fillRect(15, 15, 10, 10);
+		bounce6 = new Picture(image6);
+	}
+
+	public void nextBounce() {
+		switch (bouncePic) {
+		case "1":
+			setPicture(bounce2);
+			bouncePic = "2";
+			break;
+		case "2":
+			setPicture(bounce3);
+			bouncePic = "3";
+			break;
+		case "3":
+			setPicture(bounce4);
+			bouncePic = "4";
+			break;
+		case "4":
+			setPicture(bounce5);
+			bouncePic = "5";
+			break;
+		case "5":
+			setPicture(bounce6);
+			bouncePic = "6";
+			break;
+		case "6":
+			setPicture(bounce1);
+			bouncePic = "1";
+			break;
+		default:
+			setPicture(bounce1);
+			bouncePic = "1";
+		}
+	}
+
+	@Override
+	public void processEvent(SpriteCollisionEvent event) {
+		if (event.xlo) {
+			nextBounce();
+			setVelX(2);
+		} else if (event.xhi) {
+			nextBounce();
+			setVelX(-2);
+		} else if (event.yhi) {
+			nextBounce();
+			setVelY(-2);
+		} else if (event.ylo) {
+			nextBounce();
+			setVelY(2);
+		}
+	}
+}
