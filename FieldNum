@@ -1,0 +1,27 @@
+package soccerInf;
+
+import static java.awt.Color.white;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import basicgraphics.BasicFrame;
+import basicgraphics.Sprite;
+import basicgraphics.SpriteComponent;
+import basicgraphics.images.Picture;
+
+public class FieldNum extends Sprite {
+	public FieldNum(SpriteComponent sc) {
+		super(sc);
+	}
+
+	public FieldNum(SpriteComponent sc, int x, int y) {
+		super(sc);
+		BufferedImage i1 = BasicFrame.createImage(20, 40);
+		Graphics graphic = i1.getGraphics();
+		graphic.setColor(white);
+		graphic.fillRect(0, 0, 20, 40);
+		setX(x);
+		setY(y);
+		Picture a1 = new Picture(i1);
+		setPicture(a1);
+	}
+}
